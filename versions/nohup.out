@@ -1,0 +1,15 @@
+  File "weather_server.py", line 2
+SyntaxError: Non-ASCII character '\xe4' in file weather_server.py on line 2, but no encoding declared; see http://python.org/dev/peps/pep-0263/ for details
+Press Ctrl-C to quit.
+Traceback (most recent call last):
+  File "animate_weather.py", line 121, in <module>
+    text1 = str(text1, encoding = 'utf-8').replace('\x00', '')
+TypeError: str() takes at most 1 argument (2 given)
+  File "/home/pi/Prog/ssd1306/weather_server.py", line 107
+    s += (ss + ',')  #用逗号分隔
+                           ^
+TabError: inconsistent use of tabs and spaces in indentation
+  File "/home/pi/Prog/ssd1306/weather_server.py", line 107
+    s += (ss + ',')  #用逗号分隔
+                           ^
+TabError: inconsistent use of tabs and spaces in indentation
