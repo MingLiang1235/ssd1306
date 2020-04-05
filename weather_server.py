@@ -11,7 +11,7 @@
 import mmap
 import contextlib
 import time
-
+import logging
 import requests
 import random
 import time
@@ -73,7 +73,7 @@ def get_data(html_text):
 
 
 if __name__ == '__main__':
-	#url = '苏州':'http://www.weather.com.cn/weather/101190401.shtml'
+	logging.basicConfig(filename="/home/pi/Prog/ssd1306/log",filemode="a",format="%(asctime)s-%(name)s-%(message)s",level=logging.INFO)
 	url = {
 			'北京':'http://www.weather.com.cn/weather/101010100.shtml',
 			'三亚':'http://www.weather.com.cn/weather/101310201.shtml',
@@ -83,21 +83,27 @@ if __name__ == '__main__':
 			}
 	
 	
-	#write_data(result,'weather.dat')
-	with open("weather.dat","w") as f:  #test1.dat
+	with open("weather.dat","w") as f:  
 		f.write('\x00' * 1024)
 
-	final = []
-	for key, values in url.items():
-		html = get_content(values)
-		result = get_data(html)
-		result.insert(0,key)
-		final.append(result)
-	print(str(final))
 	    
-	with open("weather.dat",'r+') as f:   #test1.dat
+	with open("weather.dat",'r+') as f:   
 		with contextlib.closing(mmap.mmap(f.fileno(), 1024, access=mmap.ACCESS_WRITE)) as m:
-			for i in range (1, 10001):
+			#for i in range (1, 10001):
+			while True:
+				try:
+					fill = '\x00' * 1024
+					fill = fill.encode(encoding = 'utf-8') # turn str to bytes
+					m.write(fill)
+				except Exception as err:
+					logging.warning("?"*10+str(err))
+				final = []
+				for key, values in url.items():
+					html = get_content(values)
+					result = get_data(html)
+					result.insert(0,key)
+					final.append(result)
+				logging.info(str(final))
 				m.seek(0)
 				outp_s = ''
 				for result in final:     #result必得是数列
@@ -108,7 +114,7 @@ if __name__ == '__main__':
 					s = s[0:-1]          #每个城市最后一个逗号去掉，改成空格（下一行实现）
 					outp_s += (s + ' ')
 				#s = s + str(i)
-				print(outp_s)
+				logging.info(outp_s)
 				outp_s.rjust(1024, '\x00')
 				outp_s = outp_s.encode(encoding = 'utf-8')  #将str类型的s转变为bytes类型。
 				m.write(outp_s)
