@@ -83,28 +83,31 @@ if __name__ == '__main__':
 			}
 	
 	
-	with open("weather.dat","w") as f:  
-		f.write('\x00' * 1024)
 
 	    
-	with open("weather.dat",'r+') as f:   
-		with contextlib.closing(mmap.mmap(f.fileno(), 1024, access=mmap.ACCESS_WRITE)) as m:
-			#for i in range (1, 10001):
-			while True:
-				try:
-					fill = '\x00' * 1024
-					fill = fill.encode(encoding = 'utf-8') # turn str to bytes
-					m.write(fill)
-				except Exception as err:
-					logging.warning("?"*10+str(err))
+	while True:
+		with open("/home/pi/Prog/ssd1306/weather.dat","wb") as f:
+			fill = '\x00' * 1024
+			fill = fill.encode(encoding = 'utf-8') # turns str to bytes and write to file.
+			f.write(fill) # turns str to bytes and write to file.
+			f.close()
+		with open("/home/pi/Prog/ssd1306/weather.dat",'r+b') as f:   
+			with contextlib.closing(mmap.mmap(f.fileno(), 1024, access=mmap.ACCESS_WRITE)) as m:
+				#try:
+				#	fill = '\x00' * 1024
+				#	fill = fill.encode(encoding = 'utf-8') # turns str to bytes
+				#	m.seek(0)
+				#	m.write(fill)
+				#	m.flush()
+				#except Exception as err:
+				#	logging.warning("?"*10+str(err))
 				final = []
 				for key, values in url.items():
 					html = get_content(values)
 					result = get_data(html)
 					result.insert(0,key)
 					final.append(result)
-				logging.info(str(final))
-				m.seek(0)
+				#logging.info(str(final))
 				outp_s = ''
 				for result in final:     #result必得是数列
 					s = ''
@@ -114,9 +117,15 @@ if __name__ == '__main__':
 					s = s[0:-1]          #每个城市最后一个逗号去掉，改成空格（下一行实现）
 					outp_s += (s + ' ')
 				#s = s + str(i)
-				logging.info(outp_s)
-				outp_s.rjust(1024, '\x00')
-				outp_s = outp_s.encode(encoding = 'utf-8')  #将str类型的s转变为bytes类型。
-				m.write(outp_s)
-				m.flush()
-				time.sleep(3600)
+				try:
+					m.seek(0)
+					logging.info(outp_s)
+					outp_s.rjust(1024, '\x00')
+					outp_s = outp_s.encode(encoding = 'utf-8')  #将str类型的s转变为bytes类型。
+					m.write(outp_s)
+					m.flush()
+				except Exception as err:
+					logging.warning("!"*10+str(err))
+			m.close()
+		f.close()
+		time.sleep(3600)

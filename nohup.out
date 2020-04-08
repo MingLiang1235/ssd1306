@@ -1,0 +1,24 @@
+Traceback (most recent call last):
+  File "/home/pi/Prog/ssd1306/weather_server.py", line 92, in <module>
+    with contextlib.closing(mmap.mmap(f.fileno(), 1024, access=mmap.ACCESS_WRITE)) as m:
+ValueError: mmap length is greater than file size
+Traceback (most recent call last):
+  File "/home/pi/Prog/ssd1306/weather_server.py", line 92, in <module>
+    with contextlib.closing(mmap.mmap(f.fileno(), 1024, access=mmap.ACCESS_WRITE)) as m:
+ValueError: mmap length is greater than file size
+Traceback (most recent call last):
+  File "/home/pi/Prog/ssd1306/weather_server.py", line 87, in <module>
+    f.write('\x00' * 1024)
+TypeError: a bytes-like object is required, not 'str'
+  File "/home/pi/Prog/ssd1306/weather_server.py", line 89
+    f.close()
+    ^
+SyntaxError: invalid syntax
+  File "/home/pi/Prog/ssd1306/weather_server.py", line 89
+    f.Close()
+    ^
+SyntaxError: invalid syntax
+Traceback (most recent call last):
+  File "/home/pi/Prog/ssd1306/weather_server.py", line 90, in <module>
+    f.Close()
+AttributeError: '_io.BufferedWriter' object has no attribute 'Close'

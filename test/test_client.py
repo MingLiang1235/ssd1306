@@ -94,14 +94,14 @@ draw = ImageDraw.Draw(image)
 #text = u'你好，我们很好。北京 0'+chr(0x2103)+', '
 #text = u"你好，北京 0" + u'\x00\xb0' + u'\x21\x03' + u'\x24\x60'
 #text1 = u"你好,北京 0" + unichr(0x2103) + u"北戴河 10" + unichr(0x2103) + u"三亚 25" + unichr(0x2103) + u"青岛 5" + unichr(0x2103) + u"大连 0" + unichr(0x2103)
-text1 = "Wellcome to weather and money programme! Author: unicoder@sohu.com"
+text1 = "Test to weather and money! Author: unicoder@sohu.com"
 text2 = u"   零钱：2500.00 " + u"  浦发：749.00 " + u"  余额宝：66.15"
 
 
 # Set animation and sine wave parameters.
 amplitude = height/4
 #offset = height/2 - 4
-offset = -1
+offset = -2
 velocity = -3
 startpos = width
 
@@ -115,7 +115,7 @@ while True:
     count += 1
 
     if count > 100 and not first_run:
-        with open("/home/pi/Prog/ssd1306/weather.dat","r") as f:
+        with open("/home/pi/Prog/ssd1306/test/data","r") as f:
             with contextlib.closing(mmap.mmap(f.fileno(), 1024, access=mmap.ACCESS_READ)) as m:
                 text1 = m.read(1024)
                 text1 = str(text1, encoding = 'utf-8').replace('\x00', '')
